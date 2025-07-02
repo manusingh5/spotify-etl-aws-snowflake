@@ -19,15 +19,28 @@ It automates data flow from Spotify API to Snowflake via S3, AWS Glue, and Snowp
 ---## 📂 S3 Folder Structure
 s3://spotify-etl-glue-project/
 ├── raw_data/
-│ └──to_processed/ ← Raw JSON files saved by Lambda
+│ ├── to_processed/ ← Raw JSON files from Lambda (initial)
+│ └── processed/ ← Moved after transformation (archived)
 │
-├── transformed/ ← Output of Glue Jobs
-│ ├── songs_data/
-│ ├── artist_data/
-│ └── album_data/
+├── transformed/
+│ ├── songs_data/ ← Cleaned song data
+│ ├── artist_data/ ← Cleaned artist data
+│ └── album_data/ ← Cleaned album data
+
+### 📋 Folder Descriptions
+
+| S3 Folder Path                          | Description                                      |
+|----------------------------------------|--------------------------------------------------|
+| `raw_data/to_processed/`               | Raw JSON from Lambda (before Glue processes it)  |
+| `raw_data/processed/`                  | Archived after Glue processing (safe backup)     |
+| `transformed/songs_data/`              | Transformed songs data (ready for Snowpipe)      |
+| `transformed/artist_data/`             | Transformed artist metadata                      |
+| `transformed/album_data/`              | Transformed album metadata                       |
 
 
-📝 After transformation, raw files from `processed/` are deleted to keep S3 clean.
+
+
+📝 After Glue processing, raw files are archived from `to_processed/` to `processed/` for future reference and debugging.
 
 ---
 
